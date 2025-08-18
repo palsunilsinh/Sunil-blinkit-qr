@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom QR Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    select, input, button { margin: 5px; padding: 8px; }
+    canvas { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Custom QR Generator</h2>
+
+  <!-- Dropdowns -->
+  <select id="part1">
+    <option value="">--</option>
+    <option value="F0">F0</option>
+    <option value="L0">L0</option>
+    <option value="H1">H1</option>
+    <option value="F1">F1</option>
+    <option value="CR01">CR01</option>
+    <option value="FV01">FV01</option>
+    <option value="C1">C1</option>
+  </select>
+
+  <select id="part2">
+    <option value="">--</option>
+    <option value="A01">A01</option>
+    <option value="A02">A02</option>
+    <option value="A03">A03</option>
+    <option value="A04">A04</option>
+    <option value="A05">A05</option>
+    <option value="A06">A06</option>
+    <option value="A07">A07</option>
+    <option value="A08">A08</option>
+    <option value="A09">A09</option>
+    <option value="A10">A10</option>
+    <option value="A11">A11</option>
+  </select>
+
+  <select id="part3">
+    <option value="">--</option>
+    <!-- 001 to 026 -->
+    <script>
+      for (let i=1;i<=26;i++){
+        let val = i.toString().padStart(3,'0');
+        document.write(`<option value="${val}">${val}</option>`);
+      }
+    </script>
+  </select>
+
+  <select id="part4">
+    <option value="">--</option>
+    <!-- 01 to 07 -->
+    <script>
+      for (let i=1;i<=7;i++){
+        let val = i.toString().padStart(2,'0');
+        document.write(`<option value="${val}">${val}</option>`);
+      }
+    </script>
+  </select>
+
+  <select id="part5">
+    <option value="">--</option>
+    <option value="A">A</option>
+    <option value="B">B</option>
+    <option value="C">C</option>
+  </select>
+
+  <br><br>
+
+  <!-- QR Options -->
+  Size: <input type="number" id="size" value="200" min="100" max="500">
+  Margin: <input type="number" id="margin" value="2" min="0" max="20">
+  <br>
+  FG Color: <input type="color" id="fg" value="#000000">
+  BG Color: <input type="color" id="bg" value="#ffffff">
+
+  <br><br>
+  <button onclick="generateQR()">Generate QR</button>
+
+  <br>
+  <canvas id="qrcode"></canvas>
+
+  <script>
+    function generateQR(){
+      let parts = [
+        document.getElementById('part1').value,
+        document.getElementById('part2').value,
+        document.getElementById('part3').value,
+        document.getElementById('part4').value,
+        document.getElementById('part5').value
+      ];
+
+      // खाली वाले parts हटाओ
+      let text = parts.filter(v => v !== "").join("-");
+
+      let qr = new QRious({
+        element: document.getElementById('qrcode'),
+        value: text || "No Value",
+        size: parseInt(document.getElementById('size').value),
+        level: 'H',
+        foreground: document.getElementById('fg').value,
+        background: document.getElementById('bg').value,
+        padding: parseInt(document.getElementById('margin').value)
+      });
+    }
+  </script>
+</body>
+</html>
