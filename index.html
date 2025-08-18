@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SUNIL BLINKIT QR Code Generator with Margin</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f0f0f0;
+    padding: 20px;
+  }
+  select, button, input {
+    margin: 5px;
+    padding: 5px;
+    font-size: 14px;
+  }
+  #qrcode {
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h2>SUNIL BLINKIT QR</h2>
+
+<!-- Dropdown 1 -->
+<select id="part1">
+  <option value="">1 - Select</option>
+  <option value="F0">F0</option>
+  <option value="L0">L0</option>
+  <option value="F1">F1</option>
+  <option value="CR01">CR01</option>
+  <option value="FV01">FV01</option>
+  <option value="C1">C1</option>
+  <option value="H1">H1</option>
+</select>
+
+<!-- Dropdown 2 -->
+<select id="part2">
+  <option value="">2 - Select</option>
+  <script>
+    for(let i=1;i<=11;i++){
+      const val = "A"+(i<10?"0":"")+i;
+      document.write(`<option value="${val}">${val}</option>`);
+    }
+  </script>
+</select>
+
+<!-- Dropdown 3 -->
+<select id="part3">
+  <option value="">3 - Select</option>
+  <script>
+    for(let i=1;i<=26;i++){
+      const val = (i<10?"00":"0")+i;
+      document.write(`<option value="${val}">${val}</option>`);
+    }
+  </script>
+</select>
+
+<!-- Dropdown 4 -->
+<select id="part4">
+  <option value="">4 - Select</option>
+  <script>
+    for(let i=1;i<=7;i++){
+      const val = (i<10?"0":"")+i;
+      document.write(`<option value="${val}">${val}</option>`);
+    }
+  </script>
+</select>
+
+<!-- Dropdown 5 -->
+<select id="part5">
+  <option value="">5 - Select</option>
+  <option value="A">A</option>
+  <option value="B">B</option>
+  <option value="C">C</option>
+  <option value="D">D</option>
+  <option value="E">E</option>
+  <option value="F">F</option>
+  <option value="G">G</option>
+  <option value="H">H</option>
+</select>
+
+<br>
+
+<label>Size(px):</label>
+<input id="size" type="number" value="150" style="width:70px;">
+
+<label>Margin (px):</label>
+<input id="margin" type="number" value="4" style="width:60px;">
+
+<br>
+
+<label>Foreground:</label>
+<input id="fg" type="color" value="#000000">
+
+<label>Background:</label>
+<input id="bg" type="color" value="#ffffff">
+<br>
+
+<button onclick="generateQR()">Generate QR Code</button>
+
+<div id="qrcode"></div>
+
+<script>
+function generateQR() {
+  const p1 = document.getElementById("part1").value;
+  const p2 = document.getElementById("part2").value;
+  const p3 = document.getElementById("part3").value;
+  const p4 = document.getElementById("part4").value;
+  const p5 = document.getElementById("part5").value;
+
+  const size = parseInt(document.getElementById("size").value);
+  const margin = parseInt(document.getElementById("margin").value);
+  const fg = document.getElementById("fg").value;
+  const bg = document.getElementById("bg").value;
+
+  if (!p1 || !p2 || !p3 || !p4 || !p5) {
+    alert("Please select all parts!");
+    return;
+  }
+
+  // Final format e.g. F0-A02-025-02-B
+  const data = `${p1}-${p2}-${p3}-${p4}-${p5}`;
+
+  document.getElementById("qrcode").innerHTML = "";
+
+  // Create canvas and generate QR code with margin
+  const qr = new QRious({
+    value: data,
+    size: size,
+    foreground: fg,
+    background: bg,
+    padding: margin
+  });
+
+  const img = document.createElement("img");
+  img.src = qr.toDataURL();
+  document.getElementById("qrcode").appendChild(img);
+}
+</script>
+
+</body>
+</html>
